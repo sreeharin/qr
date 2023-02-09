@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <title>QR code generator</title>
+</head>
+<body>
+    <div id="main-container" class="container text-center mt-3">
+        <h1 class="display-6 text-secondary">
+            Select files to convert to QR code
+        </h1>
+
+        <form action="/convert" method="POST" enctype="multipart/form-data" class="mt-5">
+            <div class="hstack gap-3 justify-content-center">
+                <input type="file" name="files" id="files" class="form-control w-25" multiple>
+                <button type="submit" class="btn btn-dark">
+                    Convert!
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
