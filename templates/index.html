@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="device-width, initial-scale=1.0" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <title>QR code generator</title>
 </head>
 <body>
@@ -12,14 +13,55 @@
             Select files to convert to QR code
         </h1>
 
-        <form action="/convert" method="POST" enctype="multipart/form-data" class="mt-5">
+        <!-- <div class="mt-3 alert alert-success alert-dismissible fade show w-25 mx-auto" role="alert"> -->
+        <!--     Files have been convereted! -->
+        <!--     <button type="button" class="btn-close" data-bs-dismiss="alert"> -->
+        <!--     </button> -->
+        <!-- </div> -->
+
+        <div id="alert-placeholder"></div>
+
+        <form id="file-form" class="mt-3">
             <div class="hstack gap-3 justify-content-center">
-                <input type="file" name="files" id="files" class="form-control w-25" multiple>
-                <button type="submit" class="btn btn-dark">
-                    Convert!
-                </button>
+                <input type="file" name="files" id="files" class="form-control w-25" multiple required>
+                <button id="submit-btn" type="submit" class="btn btn-lg btn-dark">Convert!</button>
             </div>
         </form>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#file-form").submit(function(event){
+                $("#submit-btn").prop("disabled", true);
+                $("#submit-btn").html(
+                    `<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Converting...`
+                );
+                var formData  = new FormData(document.querySelector('#file-form'));
+                $.ajax({
+                    url: '/',
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(data){
+                        $("#alert-placeholder").html(
+                            `
+                            <div class="mt-3 alert alert-success alert-dismissible fade show w-50 mx-auto" role="alert">
+                                Files have been convereted! Click <a href="/download" class="alert-link">here</a> to download
+                                <button type="button" class="btn-close" data-bs-dismiss="alert">
+                                </button>
+                            </div>
+                            `
+                        );
+                        $("#submit-btn").prop("disabled", false);
+                        $("#submit-btn").html(`Convert!`);
+                        $("form").trigger("reset");
+                    }
+                });
+                event.preventDefault();
+            });
+        });
+    </script>
 </body>
 </html>
