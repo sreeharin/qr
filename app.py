@@ -43,4 +43,4 @@ def download():
             os.path.join(app.config['ZIP_FOLDER']), 'qr_codes.zip')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0")
